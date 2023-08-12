@@ -1,0 +1,121 @@
+.logo-header[data-background-color=blue] {
+    background: #5BC8AC!important;
+}
+
+.navbar-header[data-background-color=blue2] {
+    background: #5BC8AC!important;
+}
+
+p {
+    font-family: poppins;
+}
+
+h3 {
+    font-family: poppins;
+    width: 450px;
+    margin-top :10px;
+}
+
+.card-stats .card-body {
+    padding: 35px 15px 35px 15px!important;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #5BC8AC;
+    border-color: #5BC8AC;
+}
+body{
+    font-family: poppins;
+}
+
+.sidebar .nav-collapse li a .sub-item, .sidebar[data-background-color=white] .nav-collapse li a .sub-item {
+    font-size: 14px;
+    font-family: poppins;
+    position: relative;
+    margin-left: 25px;
+    opacity: .85;
+}
+
+.modal-detail .detail-heading p {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 0!important;
+}
+.modal-detail .detail-text p {
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 0!important;
+}
+
+.modal-detail .modal-title p {
+    font-size: 18px;
+    font-weight: 800!important;
+    margin-bottom: 0!important;
+}
+
+.modal-title p {
+    font-size: 18px;
+    font-weight: 800!important;
+    margin-bottom: 0!important;
+}
+
+/* button */
+.btn:not(:disabled):not(.disabled) {
+    cursor: pointer;
+    font-family: poppins;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th {
+    padding: 8px;
+    font-family: poppins!important;
+}
+
+.page-header .page-title {
+    margin-bottom: 0;
+    font-family: poppins!important;
+}
+
+li a {
+    color: #575962;
+    font-size: 13px;
+    font-family: poppins!important;
+}
+
+.fw-bold {
+    font-weight: 600!important;
+    font-family: poppins!important;
+}
+
+.fw-mediumbold {
+    font-size: 18px;
+    font-weight: 800!important;
+    font-family: poppins!important;
+}
+
+.text-light {
+    color: #f8f9fa!important;
+    font-family: poppins!important;
+}
+
+.form-select{
+    width:343.5px;
+    height:41.8px;
+    border-radius:0.25rem;
+    border-color:#ebedf2;
+    padding:0.6rem 1rem;
+    font-size:14px;
+}
+
+.btn-primary:disabled, .btn-primary:focus, .btn-primary:hover {
+    background: #1572e8!important;
+    border-color: #1572e8!important;
+    font-family: poppins!important;
+}
+
+.btn-success:disabled, .btn-success:focus, .btn-success:hover {
+    background: #31ce36!important;
+    border-color: #31ce36!important;
+    font-family: poppins!important;
+}
