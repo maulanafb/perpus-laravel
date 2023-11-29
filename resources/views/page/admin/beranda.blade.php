@@ -157,8 +157,8 @@
                                         <div class="col-md-6">
                                             <div class="col-ms col-stats ml-3 ml-sm-0">
                                                 <div class="numbers">
-                                                    <p class="card-category">Peminjaman</p>
-                                                    <h4 class="card-title">50</h4>
+                                                    <p class="card-category">Peminjaman Mandiri</p>
+                                                    <h4 class="card-title">{{ $total_pinjam_mandiri }}</h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -178,8 +178,50 @@
                                         <div class="col-md-6">
                                             <div class="col-ms col-stats ml-3 ml-sm-0">
                                                 <div class="numbers">
-                                                    <p class="card-category">Pengembalian</p>
-                                                    <h4 class="card-title">50</h4>
+                                                    <p class="card-category">Peminjaman Kolektif</p>
+                                                    <h4 class="card-title">{{ $total_pinjam_kolektif }}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="icon-big text-center icon-success bubble-shadow-small">
+                                                <i class="fa-solid fa-book-bookmark"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                            <div class="card card-stats card-round">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-6">
+                                            <div class="col-ms col-stats ml-3 ml-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">Pengembalian Mandiri</p>
+                                                    <h4 class="card-title">{{ $total_pengembalian_mandiri}}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="icon-big text-center icon-success bubble-shadow-small">
+                                                <i class="fa-solid fa-right-left"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                            <div class="card card-stats card-round">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-6">
+                                            <div class="col-ms col-stats ml-3 ml-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">Pengembalian Kolektif</p>
+                                                    <h4 class="card-title">{{ $total_pengembalian_kolektif}}</h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -308,7 +350,34 @@
 
     <!-- Atlantis JS -->
     <script src="../assets/js/atlantis.min.js"></script>
+<!-- SweetAlert library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 
+
+<script>
+    // Add an event listener to the logout link
+    document.getElementById('logout-link').addEventListener('click', function (event) {
+      event.preventDefault(); // Prevent the default link behavior
+  
+      // Display the SweetAlert confirmation dialog
+      Swal.fire({
+        title: 'Yakin?',
+        text: 'Anda akan keluar dari akun Anda!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        cancelButtonText: 'Batal',
+        confirmButtonText: 'Ya, keluar',
+
+      }).then((result) => {
+        // If the user clicks the "Yes, keluar" button, redirect to the logout URL
+        if (result.isConfirmed) {
+          window.location.href = "/logout";
+        }
+      });
+    });
+  </script>
     <!-- Atlantis DEMO methods, don't include it in your project! -->
     {{-- <script src="../assets/js/setting-demo.js"></script>
 	<script src="../assets/js/demo.js"></script>

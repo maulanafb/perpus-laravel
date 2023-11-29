@@ -109,13 +109,9 @@ li a {
 }
 
 .btn-primary:disabled, .btn-primary:focus, .btn-primary:hover {
-    background: #1572e8!important;
-    border-color: #1572e8!important;
     font-family: poppins!important;
 }
 
-.btn-success:disabled, .btn-success:focus, .btn-success:hover {
-    background: #31ce36!important;
-    border-color: #31ce36!important;
+.btn-success:disabled, .btn-success:focus, .btn-success:hover {  
     font-family: poppins!important;
 }

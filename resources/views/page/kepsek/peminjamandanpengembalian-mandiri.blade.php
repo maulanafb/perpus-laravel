@@ -113,7 +113,7 @@
                                                     <th>Tanggal Perpanjang</th>
                                                     <th>Denda</th>
                                                     <th>Status</th>
-                                                    <th style="width: 10%">Aksi</th>
+                                                    {{-- <th style="width: 10%">Aksi</th> --}}
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -304,7 +304,7 @@
                         },
                         {
                             extend: 'pdfHtml5',
-                            title: 'Rekap Data Peminjaman dan Pengembalian Mandiri',
+                            title: 'Peminjaman dan Pengembalian Mandiri',
                             // orientation: 'landscape',
                             exportOptions: {
                                 columns: [0, 1, 2, 3, 5, 6, 7, 8]
@@ -373,12 +373,12 @@
                             data: 'status',
                             name: 'status'
                         },
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false,
-                            searchable: false
-                        },
+                        // {
+                        //     data: 'action',
+                        //     name: 'action',
+                        //     orderable: false,
+                        //     searchable: false
+                        // },
                     ]
                 });
 

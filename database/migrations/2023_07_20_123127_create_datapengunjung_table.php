@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -15,10 +14,10 @@ return new class extends Migration
     {
         Schema::create('datapengunjung', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('kelas');
+            $table->unsignedBigInteger('id_user');
             $table->date('tgl_kunjungan');
 
+            $table->foreign('id_user')->references('id')->on('users');
             $table->timestamps();
         });
     }

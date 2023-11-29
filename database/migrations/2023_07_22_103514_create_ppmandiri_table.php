@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -16,10 +15,8 @@ return new class extends Migration
         Schema::create('ppmandiri', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_buku');
-            $table->string('nisn');
-            $table->string('nama');
-            $table->string('judul');
-            $table->string('no_panggil');
+            $table->unsignedBigInteger('id_user');
+            $table->integer('jumlah');
             $table->date('tgl_pinjam');
             $table->date('tgl_kembali')->nullable();
             $table->date('tgl_perpanjang')->nullable();
@@ -27,7 +24,8 @@ return new class extends Migration
             $table->boolean('status')->default(false);
 
 
-            $table->foreign('id_buku')->references('id')->on('databukus');
+            $table->foreign('id_buku')->references('id')->on('databukus')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

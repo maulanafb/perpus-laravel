@@ -9,6 +9,12 @@
 
     {{-- filter data  --}}
 
+    <style>
+        .select2-dropdown {
+            z-index: 99999;
+        }
+    </style>
+
 
     <!-- Fonts and icons -->
     <script src="../assets/js/plugin/webfont/webfont.min.js"></script>
@@ -32,6 +38,9 @@
     <!-- CSS Files -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/atlantis.min.css">
+    <!-- Tambahkan ini di dalam tag <head> -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" rel="stylesheet" />
+
 
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
@@ -92,8 +101,14 @@
                                         <div style="margin: 20px 0px;">
                                             <strong>Date Filter:</strong>
                                             <input type="text" name="daterange" value="" />
-                                            <button class="btn btn-success filter">Filter</button>
+                                            <button class="btn btn-primary filter ml-2">Filter</button>
                                         </div>
+                                        <button id="excelExport" class="btn btn-success ml-2"><i
+                                                class="fa fa-file-excel-o"></i>
+                                            Excell</button>
+                                        <button id="pdfExport" class="btn btn-danger ml-3"><i
+                                                class="fa fa-file-pdf-o"></i>
+                                            PDF</button>
                                         <h4 class="card-title"></h4>
                                         <button class="btn btn-primary btn-round ml-auto"
                                             style="background: #5BC8AC!important;border-color:#5BC8AC !important;"
@@ -105,8 +120,7 @@
 
                                     <div class="card-body">
                                         <!-- Modal Tambah Peminjaman dan Pengembalian Kolektif-->
-                                        <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog"
-                                            aria-hidden="true">
+                                        <div class="modal fade" id="addRowModal" role="dialog" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header no-bd">
@@ -127,46 +141,43 @@
                                                             method="POST" enctype="multipart/form-data">
                                                             @csrf
                                                             <div class="row">
+
+
                                                                 <div class="col-sm-12 mb-3">
                                                                     <div class="row ">
                                                                         <div class="col-md-3 d-flex align-items-center">
-                                                                            <label>Nisn</label>
+                                                                            <label>Siswa</label>
                                                                         </div>
-                                                                        <div class="col-md-9">
-                                                                            <input id="addName" name="nisn"
-                                                                                type="text" class="form-control"
-                                                                                placeholder="">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-sm-12 mb-3">
-                                                                    <div class="row ">
-                                                                        <div class="col-md-3 d-flex align-items-center">
-                                                                            <label>Nama</label>
-                                                                        </div>
-                                                                        <div class="col-md-9">
-                                                                            <input id="addName" name="nama"
-                                                                                type="text" class="form-control"
-                                                                                placeholder="">
+                                                                        <div class="col-md-9 ">
+                                                                            <select name="id_user" id="addNamess"
+                                                                                class="form-select">
+                                                                                <option value="">Pilih Siswa
+                                                                                </option>
+                                                                                @foreach ($data as $d)
+                                                                                    <option value="{{ $d->id }}">
+                                                                                        {{ $d->name }} -
+                                                                                        {{ $d->kelas }}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <input type="hidden" name="id_buku" id="addName"
-                                                                    value="{{ $judul_buku[0]->id ?? '' }}">
+
                                                                 <div class="col-sm-12 mb-3">
                                                                     <div class="row ">
                                                                         <div class="col-md-3 d-flex align-items-center">
                                                                             <label>Judul</label>
                                                                         </div>
                                                                         <div class="col-md-9">
-                                                                            {{-- <input id="addName" type="text" class="form-control" placeholder="fill name"> --}}
-                                                                            <select name="judul" id="addName"
+                                                                            <select name="id_buku" id="addNames"
                                                                                 class="form-select">
-                                                                                <option value="">pilih</option>
+                                                                                <option value="">Pilih Judul Buku
+                                                                                </option>
                                                                                 @foreach ($judul_buku as $jb)
-                                                                                    <option
-                                                                                        value="{{ $jb->judul }}">
-                                                                                        {{ $jb->judul }}</option>
+                                                                                    <option value="{{ $jb->id }}">
+                                                                                        {{ $jb->judul }}
+                                                                                    </option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
@@ -181,7 +192,7 @@
                                                                         <div class="col-md-9">
                                                                             <input id="addName" name="jumlah"
                                                                                 type="text" class="form-control"
-                                                                                placeholder="">
+                                                                                placeholder="" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -194,7 +205,7 @@
                                                                         <div class="col-md-9">
                                                                             <input id="addName" name="tgl_pinjam"
                                                                                 type="date" class="form-control"
-                                                                                placeholder="">
+                                                                                placeholder="" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -218,7 +229,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>No</th>
-                                                        <th>Nisn</th>
+                                                        <th>NISN</th>
                                                         <th>Nama</th>
                                                         <th>Judul Buku</th>
                                                         <th>Jumlah</th>
@@ -341,14 +352,16 @@
             <!-- Atlantis DEMO methods, don't include it in your project! -->
             <script src="../../assets/js/setting-demo2.js"></script>
             {{-- css button data table --}}
+
             <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
             <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
             <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
             {{-- <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.js"></script> --}}
             <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
             <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.js"></script>
-            {{-- <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.js"></script> --}}
-            {{-- <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script> --}}
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/bpampuch/pdfmake@0.1.18/build/pdfmake.js"></script>
+
+            <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
             {{-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script> --}}
             {{-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.jqueryui.js"></script> --}}
             <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.js"></script>
@@ -359,6 +372,9 @@
             <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.print.js"></script>
 
 
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+
+
             <!--DataTables -->
 
 
@@ -367,7 +383,56 @@
             <script type="text/javascript" src="//cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
             <script src="https://cdn.datatables.net/plug-ins/1.11.2/filtering/date-range.js"></script>
 
+            <!-- SweetAlert library -->
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
             <script>
+                $(document).ready(function() {
+                    $('#addNamess').select2({
+                        placeholder: 'Pilih Siswa',
+                        allowClear: true // Mengizinkan pengguna menghapus pilihan
+                    });
+                });
+            </script>
+            <script>
+                $(document).ready(function() {
+                    $('#addNames').select2({
+                        placeholder: 'Pilih Judul Buku',
+                        allowClear: true // Mengizinkan pengguna menghapus pilihan
+                    });
+                });
+            </script>
+            <script>
+                // Add an event listener to the logout link
+                document.getElementById('logout-link').addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent the default link behavior
+
+                    // Display the SweetAlert confirmation dialog
+                    Swal.fire({
+                        title: 'Yakin?',
+                        text: 'Anda akan keluar dari akun Anda!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        cancelButtonText: 'Batal',
+                        confirmButtonText: 'Ya, keluar',
+
+                    }).then((result) => {
+                        // If the user clicks the "Yes, keluar" button, redirect to the logout URL
+                        if (result.isConfirmed) {
+                            window.location.href = "/logout";
+                        }
+                    });
+                });
+            </script>
+
+            <script>
+                $("#excelExport").on("click", function() {
+                    $(".buttons-excel").trigger("click");
+                });
+                $("#pdfExport").on("click", function() {
+                    $(".buttons-pdf").trigger("click");
+                });
                 $(function() {
 
                     $('input[name="daterange"]').daterangepicker({
@@ -390,11 +455,24 @@
                             },
                             {
                                 extend: 'excel',
-                                className: 'btn btn-primary glyphicon glyphicon-list-alt '
+                                className: 'btn btn-primary glyphicon glyphicon-list-alt d-none'
                             },
                             {
-                                extend: 'pdf',
-                                className: 'btn btn-danger glyphicon glyphicon-file '
+                                extend: 'pdfHtml5',
+                                title: `Peminjaman & Pengembalian Kolektif`,
+                                // orientation: 'landscape',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 5]
+                                },
+                                customize: function(doc) {
+                                doc.content[1].margin = [ 100, 0, 100, 0 ] //left, top, right, bottom
+                                },
+                                styles: {
+                                    tableHeader: {
+                                        alignment: 'center',
+                                    }
+                                },
+                                className: 'btn btn-danger glyphicon glyphicon-file d-none'
                             },
                             {
                                 extend: 'print',
@@ -422,8 +500,8 @@
                                 name: 'nisn'
                             },
                             {
-                                data: 'nama',
-                                name: 'nama'
+                                data: 'name',
+                                name: 'name'
                             },
                             {
                                 data: 'judul',
@@ -502,6 +580,7 @@
             </script>
 
         </div>
+
 </body>
 
 </html>

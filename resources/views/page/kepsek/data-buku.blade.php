@@ -346,6 +346,19 @@
                         },
                         {
                             extend: 'pdf',
+                            title: `Data buku`,
+                                // orientation: 'landscape',
+                                exportOptions: {
+                                    columns: [0,  2, 3,4]
+                                },
+                                customize: function(doc) {
+                                doc.content[1].margin = [ 100, 0, 100, 0 ] //left, top, right, bottom
+                                },
+                                styles: {
+                                    tableHeader: {
+                                        alignment: 'center',
+                                    }
+                                },
                             className: 'btn btn-danger glyphicon glyphicon-file d-none'
                         },
                         {

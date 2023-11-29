@@ -1,0 +1,47 @@
+.header-area .main-nav .nav li.has-sub ul.sub-menu {
+    width: 169px !important;
+}
+
+.page-heading {
+    background-image: url(../images/heading-bg.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 100px 0px 120px 0px;
+    text-align: center;
+}
+
+.logo {
+    width: 20rem;
+    object-fit: contain;
+}
+
+
+.page-heading {
+    padding-top: 200px;
+}
+
+.background-header{
+    padding-top: 0 !important;
+}
+
+.header-area .main-nav .logo img{
+    width: 200px;
+}
+
+section.partners {
+    background-color: #212741;
+    padding: 134px 0px;
+    background-image: url(../images/heading-bg.jpg);
+}
+
+.header-area .main-nav .logo img {
+    width: 300px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    text-align: center !important;
+}

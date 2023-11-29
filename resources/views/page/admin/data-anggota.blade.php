@@ -35,8 +35,7 @@
     <link rel="stylesheet" href="../assets/css/style.css">
     {{-- Font awesome --}}
     <script src="https://kit.fontawesome.com/1266dcde92.js" crossorigin="anonymous"></script>
-    {{-- Sweetalert --}}
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 </head>
@@ -84,9 +83,12 @@
                                         <div style="margin: 20px 0px;">
                                             <strong>Date Filter:</strong>
                                             <input type="text" name="daterange" value="" />
-                                            <button class="btn btn-success filter ml-2">Filter</button>
+                                            <button class="btn btn-primary filter ml-2">Filter</button>
                                         </div>
-                                        <button id="pdfExport" class="btn btn-danger ml-3"><i
+                                        <button id="excelExport" class="btn btn-success ml-2"><i
+                                                class="fa fa-file-excel-o"></i>
+                                            Excell</button>
+                                        <button id="pdfExport" class="btn btn-danger ml-2"><i
                                                 class="fa fa-file-pdf-o"></i>
                                             PDF</button>
                                         <h4 class="card-title"></h4>
@@ -157,7 +159,7 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <input id="addName name" name="name" type="text"
-                                                    class="form-control" placeholder="">
+                                                    class="form-control" placeholder="" required>
                                             </div>
                                         </div>
                                     </div>
@@ -168,7 +170,7 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <input id="addName nisn" name="nisn" type="text"
-                                                    class="form-control" placeholder="nisn">
+                                                    class="form-control" placeholder="nisn" required>
                                             </div>
                                         </div>
                                     </div>
@@ -179,7 +181,7 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <input id="addName tgl_lahir" name="tgl_lahir" type="date"
-                                                    class="form-control" placeholder="Tanggal Lahir">
+                                                    class="form-control" placeholder="Tanggal Lahir" required>
                                             </div>
                                         </div>
                                     </div>
@@ -189,8 +191,16 @@
                                                 <label>Kelas</label>
                                             </div>
                                             <div class="col-md-9">
-                                                <input id="addName kelas" name="kelas" type="text"
-                                                    class="form-control" placeholder="kelas">
+                                                <select class="form-select" aria-label="Default select example"
+                                                    name="kelas" required>
+                                                    <option selected>Pilih Kelas</option>
+                                                    <option value="10 RPL">10 RPL</option>
+                                                    <option value="10 TKJ">10 TKJ</option>
+                                                    <option value="11 RPL">11 RPL</option>
+                                                    <option value="11 TKJ">11 TKJ</option>
+                                                    <option value="12 RPL">12 RPL</option>
+                                                    <option value="12 TKJ">12 TKJ</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -234,7 +244,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-12 mb-3">
+                                    {{-- <div class="col-sm-12 mb-3">
                                         <div class="row ">
                                             <div class="col-md-3 d-flex align-items-center">
                                                 <label>Ulangi Password</label>
@@ -244,7 +254,7 @@
                                                     name="password_confirmation" required autocomplete="new-password">
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="modal-footer no-bd">
                                     <button type="submit" onclick="showSweetAlertTambah()"
@@ -283,7 +293,7 @@
         {{-- <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.js"></script> --}}
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.js"></script>
-        {{-- <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.js"></script> --}}
+        <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
         {{-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script> --}}
         {{-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.jqueryui.js"></script> --}}
@@ -303,7 +313,45 @@
         <script type="text/javascript" src="//cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
         <script src="https://cdn.datatables.net/plug-ins/1.11.2/filtering/date-range.js"></script>
 
+        <!-- SweetAlert library -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
+        {{-- Sweetalert --}}
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
         <script>
+            // Add an event listener to the logout link
+            document.getElementById('logout-link').addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default link behavior
+
+                // Display the SweetAlert confirmation dialog
+                Swal.fire({
+                    title: 'Yakin?',
+                    text: 'Anda akan keluar dari akun Anda!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    cancelButtonText: 'Batal',
+                    confirmButtonText: 'Ya, keluar',
+
+                }).then((result) => {
+                    // If the user clicks the "Yes, keluar" button, redirect to the logout URL
+                    if (result.isConfirmed) {
+                        window.location.href = "/logout";
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            $("#excelExport").on("click", function() {
+                $(".buttons-excel").trigger("click");
+            });
+            $("#pdfExport").on("click", function() {
+                $(".buttons-pdf").trigger("click");
+            });
             $(function() {
 
                 $('input[name="daterange"]').daterangepicker({
@@ -330,6 +378,13 @@
                         },
                         {
                             extend: 'pdf',
+                            title: 'Data Buku',
+                            exportOptions: {
+                                    columns: [0, 1, 2, 3 ,4 ,5]
+                                },
+                                customize: function(doc) {
+                                doc.content[1].margin = [ 100, 0, 100, 0 ] //left, top, right, bottom
+                                },
                             className: 'btn btn-danger glyphicon glyphicon-file d-none'
                         },
                         {
@@ -441,6 +496,32 @@
 
     </div>
 
+    <script>
+      
+            $('.delete').click(function() {
+                var dataanggotaid = $(this).attr('data-id');
+                var nama = $(this).attr('data-nama');
+
+                swal({
+                        title: "Yakin?",
+                        text: "Kamu akan menghapus data buku dengan nama" + nama + " ",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            window.location = "/data-anggota/delete/" + dataanggotaid + " "
+                            swal("Data berhasil di hapus", {
+                                icon: "success",
+                            });
+                        } else {
+                            swal("Data tidak jadi dihapus");
+                        }
+                    });
+            });
+        });
+    </script>
 
 
 
@@ -448,22 +529,6 @@
 
 </html>
 <script>
-    function showSweetAlert() {
-        swal({
-            title: 'HAPUS DATA',
-            text: 'Data Berhasil di Hapus',
-            icon: 'success',
-            buttons: {
-                cancel: {
-                    text: 'OK',
-                    value: null,
-                    visible: true,
-                    className: 'btn btn-primary'
-                }
-            }
-        });
-    }
-
     function showSweetAlertTambah() {
         swal({
             title: 'TAMBAH DATA',

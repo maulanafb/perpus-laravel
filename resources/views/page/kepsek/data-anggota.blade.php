@@ -343,6 +343,13 @@
                         },
                         {
                             extend: 'pdf',
+                            title: 'Data Buku',
+                            exportOptions: {
+                                    columns: [0, 1, 2, 3 ,4 ,5]
+                                },
+                                customize: function(doc) {
+                                doc.content[1].margin = [ 100, 0, 100, 0 ] //left, top, right, bottom
+                                },
                             className: 'btn btn-danger glyphicon glyphicon-file d-none'
                         },
                         {

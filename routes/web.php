@@ -1,11 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\KepalaSekolahController;
-use App\Http\Controllers\SiswaController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\PengunjungController;
+use App\Http\Controllers\KepalaSekolahController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +23,17 @@ use Illuminate\Support\Facades\Auth;
 
 */
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/profile', [HomeController::class, 'Profile'])->name('profile');
+Route::get('/list-buku-mandiri', [SiswaController::class, 'listBukuMandiri'])->name('list-buku-mandiri');
+Route::get('/list-buku-kolektif', [SiswaController::class, 'listBukuKolektif'])->name('list-buku-kolektif');
+Route::get('/detail-buku-mandiri/{id}', [SiswaController::class, 'showDetailMandiri'])->name('detail-buku-mandiri.show');
+Route::get('/detail-buku-kolektif/{id}', [SiswaController::class, 'showDetailKolektif'])->name('detail-buku-kolektif.show');
+Route::get('/sop-anggota', [HomeController::class, 'SOPAnggota'])->name('SOPAnggota-Pengunjung');
+Route::get('/sop-peminjam', [HomeController::class, 'SOPPeminjaman'])->name('SOPPeminjaman-Pengunjung');
+Route::get('/sop-pengembalian', [HomeController::class, 'SOPPengembalian'])->name('SOPPengembalian-Pengunjung');
+
+
 
 
 Route::group(['middleware' => ['role:admin']], function () {
@@ -31,7 +43,7 @@ Route::group(['middleware' => ['role:admin']], function () {
     // Route::get('/data-pengunjung', [AdminController::class, 'DataPengunjung']);
 
     /* Admin - Data Buku  */
-    Route::get('/data-buku-admin', [AdminController::class, 'DataBuku'])->name('data-buku');
+    Route::get('/data-buku-admin', [AdminController::class, 'DataBuku'])->name('data-buku.admin');
 
     //create
     Route::post('/data-buku/tambah', [AdminController::class, 'TambahDataBuku']);
@@ -60,6 +72,7 @@ Route::group(['middleware' => ['role:admin']], function () {
 
     /* Admin - Peminjaman dan Pengembalian Mandiri  */
     Route::get('/peminjamandanpengembalian-mandiri-admin', [AdminController::class, 'PeminjamandanPengembalianMandiri'])->name('pinjam-mandiri');
+    Route::get('/konfirmasi-mandiri/{id}', [AdminController::class, 'KurangiStokMandiri'])->name('kurangi-stok-mandiri');
     //Create
     Route::post('/peminjamandanpengembalian-mandiri', [AdminController::class, 'TambahPeminjamanMandiri'])->name('pinjam-mandiri.create');
     //Delete
@@ -71,6 +84,7 @@ Route::group(['middleware' => ['role:admin']], function () {
 
     /* Admin - Peminjaman dan Pengembalian Kolektif  */
     Route::get('/peminjamandanpengembalian-kolektif-admin', [AdminController::class, 'PeminjamandanPengembalianKolektif'])->name('pinjam-kolektif');
+    Route::get('/konfirmasi-kolektif/{id}', [AdminController::class, 'KurangiStokKolektif'])->name('kurangi-stok-kolektif');
 
     //Create
     Route::post('/peminjamandanpengembalian-kolektif', [AdminController::class, 'TambahPeminjamanKolektif'])->name('pinjam-kolektif.create');
@@ -83,7 +97,7 @@ Route::group(['middleware' => ['role:admin']], function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 
@@ -93,8 +107,9 @@ Route::get('/laporan', [AdminController::class, 'Laporan']);
 Route::group(['middleware' => ['role:user']], function () {
     Route::get('/beranda-siswa', [SiswaController::class, 'Beranda'])->name('beranda.siswa');
     Route::get('/data-buku', [SiswaController::class, 'DataBuku'])->name('data-buku');
-    Route::get('/peminjamandanpengembalian-mandiri', [SiswaController::class, 'PeminjamandanPengembalianMandiri'])->name('pp-mandiri-siswa');
-    Route::get('/peminjamandanpengembalian-kolektif', [SiswaController::class, 'PeminjamandanPengembalianKolektif'])->name('pp-kolektif-siswa');
+    Route::post('/pp-kolektif-siswa', [SiswaController::class, 'TambahPeminjamanKolektif'])->name('pp-kolektif-siswa');
+    Route::post('/pp-mandiri-siswa', [SiswaController::class, 'TambahPeminjamanMandiri'])->name('pp-mandiri-siswa');
+
 });
 
 
@@ -106,6 +121,19 @@ Route::group(['middleware' => ['role:kepsek']], function () {
     Route::get('/beranda', [KepalaSekolahController::class, 'Beranda'])->name('beranda.kepsek');
     Route::get('/data-buku-kepsek', [KepalaSekolahController::class, 'DataBuku'])->name('data-buku-kepsek');
     Route::get('/data-anggota-kepsek', [KepalaSekolahController::class, 'DataAnggota'])->name('data-anggota-kepsek');
+    Route::get('/data-pengunjung-kepsek', [KepalaSekolahController::class, 'DataPengunjung'])->name('data-pengunjung-kepsek');
     Route::get('/pp-mandiri-kepsek', [KepalaSekolahController::class, 'PeminjamandanPengembalianMandiri'])->name('lp-mandiri-kepsek');
     Route::get('/pp-kolektif-kepsek', [KepalaSekolahController::class, 'PeminjamandanPengembalianKolektif'])->name('lp-kolektif-kepsek');
 });
+
+Route::controller(LoginController::class)->group(function () {
+    Route::get('/logout', 'Logout')->name('Logout');
+});
+
+// Route::controller(PengunjungController::class)->group(function () {
+//     Route::get('/pengunjung/beranda', 'Beranda')->name('Beranda-Pengunjung');
+//     Route::get('/pengunjung/profil', 'Profil')->name('Profil-Pengunjung');
+//     Route::get('/pengunjung/layanan/sop-anggota', 'SOPAnggota')->name('SOPAnggota-Pengunjung');
+//     Route::get('/pengunjung/layanan/sop-peminjaman', 'SOPPeminjaman')->name('SOPPeminjaman-Pengunjung');
+//     Route::get('/pengunjung/layanan/sop-pengembalian', 'SOPPengembalian')->name('SOPPengembalian-Pengunjung');
+// });

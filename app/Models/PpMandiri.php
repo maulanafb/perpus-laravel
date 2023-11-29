@@ -8,11 +8,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PpMandiri extends Model
 {
-    protected $table ="ppmandiri";
+    protected $table = "ppmandiri";
     protected $guarded = [];
     use HasFactory;
 
-    public function bukus(){
-        return $this->hasMany(Databuku::class);
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
     }
+
+    public function databuku()
+    {
+        return $this->belongsTo(Databuku::class, 'id_buku');
+    }
+
 }

@@ -7,11 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class PpKolektif extends Model
 {
-    protected $table ="ppkolektif";
+    protected $table = "ppkolektif";
     protected $guarded = [];
     use HasFactory;
 
-    public function bukus(){
-        return $this->hasMany(DataBuku::class);
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
+    }
+
+    public function databuku()
+    {
+        return $this->belongsTo(Databuku::class, 'id_buku');
     }
 }

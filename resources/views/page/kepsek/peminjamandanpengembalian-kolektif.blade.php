@@ -199,13 +199,13 @@
                                                 <thead>
                                                     <tr>
                                                         <th>No</th>
-                                                        <th>Nisn</th>
                                                         <th>Nama</th>
+                                                        <th>Kelas</th>
                                                         <th>Judul Buku</th>
                                                         <th>Jumlah</th>
                                                         <th>Tanggal Peminjaman</th>
                                                         <th>Status</th>
-                                                        <th style="width: 10%">Aksi</th>
+                                                        {{-- <th style="width: 10%">Aksi</th> --}}
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -305,48 +305,48 @@
                 </div>
                 <!-- End Custom template -->
             </div>
-            <!--   Core JS Files   -->
-            <script src="../../assets/js/core/jquery.3.2.1.min.js"></script>
-            <script src="../../assets/js/core/popper.min.js"></script>
-            <script src="../../assets/js/core/bootstrap.min.js"></script>
-            <!-- jQuery UI -->
-            <script src="../../assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-            <script src="../../assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+             <!--   Core JS Files   -->
+        <script src="../../assets/js/core/jquery.3.2.1.min.js"></script>
+        <script src="../../assets/js/core/popper.min.js"></script>
+        <script src="../../assets/js/core/bootstrap.min.js"></script>
+        <!-- jQuery UI -->
+        <script src="../../assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+        <script src="../../assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
 
-            <!-- jQuery Scrollbar -->
-            <script src="../../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-            <!-- Datatables -->
-            <script src="../../assets/js/plugin/datatables/datatables.min.js"></script>
-            <!-- Atlantis JS -->
-            <script src="../../assets/js/atlantis.min.js"></script>
-            <!-- Atlantis DEMO methods, don't include it in your project! -->
-            <script src="../../assets/js/setting-demo2.js"></script>
-            {{-- css button data table --}}
-            <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
-            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-            <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
-            {{-- <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.js"></script> --}}
-            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
-            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.js"></script>
-            <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.js"></script>
-            <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
-            {{-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script> --}}
-            {{-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.jqueryui.js"></script> --}}
-            <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.js"></script>
-            <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.jqueryui.js"></script>
-            <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.js"></script>
-            <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.flash.js"></script>
-            <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.js"></script>
-            <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.print.js"></script>
-
-
-            <!--DataTables -->
+        <!-- jQuery Scrollbar -->
+        <script src="../../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+        <!-- Datatables -->
+        <script src="../../assets/js/plugin/datatables/datatables.min.js"></script>
+        <!-- Atlantis JS -->
+        <script src="../../assets/js/atlantis.min.js"></script>
+        <!-- Atlantis DEMO methods, don't include it in your project! -->
+        <script src="../../assets/js/setting-demo2.js"></script>
+        {{-- {{ button datatable }} --}}
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+        {{-- <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.js"></script> --}}
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+        {{-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script> --}}
+        {{-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.jqueryui.js"></script> --}}
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.jqueryui.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.flash.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.print.js"></script>
 
 
-            <!--DateRangePicker -->
-            <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-            <script type="text/javascript" src="//cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-            <script src="https://cdn.datatables.net/plug-ins/1.11.2/filtering/date-range.js"></script>
+        <!--DataTables -->
+
+
+        <!--DateRangePicker -->
+        <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <script src="https://cdn.datatables.net/plug-ins/1.11.2/filtering/date-range.js"></script>
 
             <script>
                 $("#excelExport").on("click", function() {
@@ -381,6 +381,19 @@
                             },
                             {
                                 extend: 'pdfHtml5',
+                                title: `Peminjaman dan Pengembalian Kolektif`,
+                                // orientation: 'landscape',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 5]
+                                },
+                                customize: function(doc) {
+                                doc.content[1].margin = [ 100, 0, 100, 0 ] //left, top, right, bottom
+                                },
+                                styles: {
+                                    tableHeader: {
+                                        alignment: 'center',
+                                    }
+                                },
                                 className: 'btn btn-danger glyphicon glyphicon-file d-none'
                             },
                             {
@@ -405,12 +418,12 @@
                                 }
                             },
                             {
-                                data: 'nisn',
-                                name: 'nisn'
+                                data: 'name',
+                                name: 'name'
                             },
                             {
-                                data: 'nama',
-                                name: 'nama'
+                                data: 'kelas',
+                                name: 'kelas'
                             },
                             {
                                 data: 'judul',
@@ -428,12 +441,12 @@
                                 data: 'status',
                                 name: 'status'
                             },
-                            {
-                                data: 'action',
-                                name: 'action',
-                                orderable: false,
-                                searchable: false
-                            },
+                            // {
+                            //     data: 'action',
+                            //     name: 'action',
+                            //     orderable: false,
+                            //     searchable: false
+                            // },
                         ]
                     });
 

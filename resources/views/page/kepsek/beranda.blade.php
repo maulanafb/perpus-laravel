@@ -157,8 +157,8 @@
                                         <div class="col-md-6">
                                             <div class="col-ms col-stats ml-3 ml-sm-0">
                                                 <div class="numbers">
-                                                    <p class="card-category">Peminjaman</p>
-                                                    <h4 class="card-title">50</h4>
+                                                    <p class="card-category">Peminjaman Mandiri</p>
+                                                    <h4 class="card-title">{{ $total_pinjam_mandiri }}</h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -178,8 +178,50 @@
                                         <div class="col-md-6">
                                             <div class="col-ms col-stats ml-3 ml-sm-0">
                                                 <div class="numbers">
-                                                    <p class="card-category">Pengembalian</p>
-                                                    <h4 class="card-title">50</h4>
+                                                    <p class="card-category">Peminjaman Kolektif</p>
+                                                    <h4 class="card-title">{{ $total_pinjam_kolektif }}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="icon-big text-center icon-success bubble-shadow-small">
+                                                <i class="fa-solid fa-book-bookmark"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                            <div class="card card-stats card-round">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-6">
+                                            <div class="col-ms col-stats ml-3 ml-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">Pengembalian Mandiri</p>
+                                                    <h4 class="card-title">{{ $total_pengembalian_mandiri}}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="icon-big text-center icon-success bubble-shadow-small">
+                                                <i class="fa-solid fa-right-left"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                            <div class="card card-stats card-round">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-6">
+                                            <div class="col-ms col-stats ml-3 ml-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">Pengembalian Kolektif</p>
+                                                    <h4 class="card-title">{{ $total_pengembalian_kolektif}}</h4>
                                                 </div>
                                             </div>
                                         </div>
