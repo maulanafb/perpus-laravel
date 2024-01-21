@@ -21,9 +21,7 @@ return new class extends Migration {
             $table->date('tgl_kembali')->nullable();
             $table->date('tgl_perpanjang')->nullable();
             $table->integer('denda')->default(0);
-            $table->boolean('status')->default(false);
-
-
+            $table->enum('status', ["booking", "pinjam", "kembali"])->default("booking");
             $table->foreign('id_buku')->references('id')->on('databukus')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

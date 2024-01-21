@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\DataAnggota;
-use App\Models\Databuku;
-use App\Models\DataPengunjung;
-use App\Models\PpKolektif;
-use App\Models\PpMandiri;
-use App\Models\User;
 use Carbon\Carbon;
-use Yajra\DataTables\DataTables;
+use App\Models\User;
+use App\Models\Databuku;
+use App\Models\PpMandiri;
+use App\Models\PpKolektif;
+use App\Models\DataAnggota;
 use Illuminate\Http\Request;
+use App\Models\DataPengunjung;
+use PDF;
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -448,10 +449,6 @@ class AdminController extends Controller
     //PPMandiri/
     public function PeminjamandanPengembalianMandiri(Request $request)
     {
-        // $data = PpMandiri::with(['user', 'databuku'])
-        //     ->whereBetween('tgl_pinjam', [$request->from_date, $request->to_date])
-        //     ->get();
-        // dd($data);
         if ($request->ajax()) {
             $data = PpMandiri::with(['user', 'databuku'])
                 ->whereBetween('tgl_pinjam', [$request->from_date, $request->to_date])
@@ -464,10 +461,12 @@ class AdminController extends Controller
                 ->addColumn(
                     'status',
                     function ($row) {
-                        if (!$row->status) {
-                            $sts = '<div class="btn btn-secondary btn-sm">Dipinjam</div>';
+                        if ($row->status == "booking") {
+                            $sts = '<div class="btn btn-warning btn-sm">DiBooking</div>';
+                        } else if ($row->status == "pinjam") {
+                            $sts = '<div class="btn btn-success btn-sm">Dipinjam</div>';
                         } else {
-                            $sts = '<div class="btn btn-success btn-sm">Dikembalikan</div>';
+                            $sts = '<div class="btn btn-secondary btn-sm">Dikembalikan</div>';
                         }
                         return $sts;
                     }
@@ -489,18 +488,18 @@ class AdminController extends Controller
                         $btn = '<div class="form-button-action">
                                                                     <a href="/konfirmasi-mandiri/' . $row->id . ' ">
                     <button type="submit" data-toggle="tooltip" title="" onclick="showSweetAlertKembali()"
-                    ' . ($row->confirm ? 'disabled' : '') . '
+                    ' . ($row->status == "kembali" ? 'disabled' : '') . '
                         class="btn btn-warning btn-round ml-2" data-original-title="konfirmasi">
                         Konfirmasi
                     </button>
                 </a>
 													<a href="/peminjamandanpengembalian-mandiri/update/' . $row->id . ' ">
-														<button type="button" data-toggle="tooltip" title="" onclick="showSweetAlertKembali()"  class="btn btn-primary btn-round ml-auto" data-original-title="Kembalikan" ' . ($row->status ? "disabled" : "") . ' ' . (!$row->confirm ? 'disabled' : '') . '>
+														<button type="button" data-toggle="tooltip" title="" onclick="showSweetAlertKembali()"  class="btn btn-primary btn-round ml-auto" data-original-title="Kembalikan">
 															kembalikan
 														</button>
 													</a>
 													<a href="/peminjamandanpengembalian-mandiri/perpanjang/' . $row->id . '">
-														<button type="button" data-toggle="tooltip" title="" onclick="showSweetAlertPerpanjang()" class="btn btn-success btn-round ml-auto" data-original-title="Perpanjang" ' . ($row->status ? "disabled" : "") . ' ' . (!$row->confirm ? 'disabled' : '') . '>
+														<button type="button" data-toggle="tooltip" title="" onclick="showSweetAlertPerpanjang()" class="btn btn-success btn-round ml-auto" data-original-title="Perpanjang">
 															Perpanjang
 														</button>
 													</a>
@@ -527,13 +526,15 @@ class AdminController extends Controller
                                                                             onclick="showSweetAlertKembali()"
                                                                             class="btn btn-primary btn-round ml-auto"
                                                                             data-original-title="Kembalikan"
-                                                                            disabled >
-                                                                            kembalikan
+                                                                            ' . ($row->status === "kembali" ? "disabled" : "") . '
+' . ($row->status === "kembali" ? "disabled" : "") . ' ' . ($row->status === "booking" ? "disabled" : "") . '>
+                                                                            kembalikankan
                                                                         </button>
                                                                     </a>
                                                                     <a href="/peminjamandanpengembalian-mandiri/perpanjang/' . $row->id . '">
-														<button type="button" data-toggle="tooltip" title="" onclick="showSweetAlertPerpanjang()" class="btn btn-success btn-round ml-auto" data-original-title="Perpanjang" ' . ($row->status ? "disabled" : "") . ' ' . ($row->confirm ? 'disabled' : '') . '>
-															Perpanjang
+														<button type="button" data-toggle="tooltip" title="" onclick="showSweetAlertPerpanjang()" class="btn btn-success btn-round ml-auto" data-original-title="Perpanjang" ' . ($row->status === "kembali" ? "disabled" : "") . '
+' . ($row->status === "kembali" ? "disabled" : "") . ' ' . ($row->status === "booking" ? "disabled" : "") . ' >
+															Perpanjangkan
 														</button>
 													</a>
                                                                     <a
@@ -587,6 +588,7 @@ class AdminController extends Controller
         $buku->save();
         // Mengatur kolom "confirm" menjadi true
         $ppmandiri->confirm = true;
+        $ppmandiri->status = "pinjam";
         $ppmandiri->save();
 
         return redirect()->back()->with('success', 'buku berhasil di konfirmasi.');
@@ -603,7 +605,6 @@ class AdminController extends Controller
         if ($buku->stok >= $jumlah) {
             $buku->stok -= $jumlah;
             $buku->save();
-
             // Lanjutkan dengan membuat peminjaman mandiri
             $dataPeminjaman = [
                 'id_buku' => $request->input('id_buku'),
@@ -632,7 +633,7 @@ class AdminController extends Controller
         $pinjam_mandiri = PpMandiri::findOrFail($id);
 
         // Ubah status menjadi "dikembalikan"
-        $pinjam_mandiri->status = !$pinjam_mandiri->status;
+        $pinjam_mandiri->status = "kembali";
         if ($pinjam_mandiri->status) {
             $pinjam_mandiri->tgl_kembali = Carbon::now()->toDateString();
         } else {
@@ -716,16 +717,18 @@ class AdminController extends Controller
                 ->addColumn(
                     'status',
                     function ($row) {
-                        if (!$row->status) {
-                            $sts = '<div class="btn btn-secondary btn-sm">Dipinjam</div>';
+                        if ($row->status == "booking") {
+                            $sts = '<div class="btn btn-warning btn-sm">DiBooking</div>';
+                        } else if ($row->status == "pinjam") {
+                            $sts = '<div class="btn btn-success btn-sm">Dipinjam</div>';
                         } else {
-                            $sts = '<div class="btn btn-success btn-sm">Dikembalikan</div>';
+                            $sts = '<div class="btn btn-secondary btn-sm">Dikembalikan</div>';
                         }
                         return $sts;
                     }
                 )
                 ->addColumn('action', function ($row) {
-                    if (!$row->status) {
+                    if (!$row->status == "booking") {
                         $btn = '<div class="form-button-action">
                 <a href="/peminjamandanpengembalian-kolektif/update/' . $row->id . ' ">
                     <button type="submit" data-toggle="tooltip" title="" onclick="showSweetAlertKembali()"
@@ -751,13 +754,14 @@ class AdminController extends Controller
                         $btn = '<div class="form-button-action">
                 <a href="/peminjamandanpengembalian-kolektif/update/' . $row->id . ' ">
                     <button type="submit" data-toggle="tooltip" title="" onclick="showSweetAlertKembali()"
-                        class="btn btn-primary btn-round ml-auto" data-original-title="Kembalikan" disabled>
+                        class="btn btn-primary btn-round ml-auto" data-original-title="Kembalikan" ' . ($row->status === "kembali" ? 'disabled' : '') . ' ' . ($row->status === "booking" ? 'disabled' : '') . '>
                         kembalikan
                     </button>
                 </a>
                 <a href="/konfirmasi-kolektif/' . $row->id . ' ">
                     <button type="submit" data-toggle="tooltip" title="" onclick="showSweetAlertKembali()"
-                    ' . ($row->confirm ? 'disabled' : '') . '
+                    ' . ($row->status === "kembali" ? 'disabled' : '') . '
+                    ' . ($row->status === "pinjam" ? 'disabled' : '') . '
                         class="ml-2 btn btn-warning btn-round ml-2" data-original-title="Kembalikan">
                         Konfirmasi
                     </button>
@@ -780,9 +784,9 @@ class AdminController extends Controller
                 ->addColumn('name', function ($row) {
                     return $row->user->name;
                 })->addColumn('judul', function ($row) {
-                return $row->databuku->judul;
+                    return $row->databuku->judul;
 
-            })
+                })
                 ->rawColumns(['action', 'status', 'nisn', 'nama', 'judul', 'jumlah'])
                 ->make(true);
         }
@@ -821,6 +825,7 @@ class AdminController extends Controller
         $buku->save();
         // Mengatur kolom "confirm" menjadi true
         $ppkolektif->confirm = true;
+        $ppkolektif->status = "pinjam";
         $ppkolektif->save();
 
         return redirect()->back()->with('success', 'buku berhasil di konfirmasi.');
@@ -890,13 +895,13 @@ class AdminController extends Controller
 
         // Ubah status menjadi "dikembalikan"
         // dd($pinjam_kolektif->status);
-        $pinjam_kolektif->status = !$pinjam_kolektif->status;
+        $pinjam_kolektif->status = "kembali";
         $pinjam_kolektif->save();
 
         // Ambil informasi buku yang dipinjam
 
         $jumlah_dikembalikan = $pinjam_kolektif->jumlah;
-
+        // dd($jumlah_dikembalikan);
         // Tambahkan jumlah yang dikembalikan ke dalam stok buku
         $buku = Databuku::findOrFail($pinjam_kolektif->id_buku);
         $judul_buku = $buku->judul;
@@ -904,7 +909,7 @@ class AdminController extends Controller
             $buku->stok += $jumlah_dikembalikan;
             $buku->save();
         }
-
+        // dd($buku->stok);
         // Redirect ke halaman sebelumnya atau halaman yang sesuai
         return redirect()->route('pinjam-kolektif');
     }
@@ -917,10 +922,86 @@ class AdminController extends Controller
         $pinjam_kolektif->delete();
         return redirect()->route('pinjam-kolektif');
     }
-
-
     public function Laporan()
     {
         return view('page.admin.laporan');
+    }
+
+    public function pdfKolektif(Request $request)
+    {
+        $query = PpKolektif::query();
+
+        if ($request->tglawal && $request->tglakhir) {
+            $tglawal = Carbon::createFromFormat('m-d-Y', $request->tglawal)->format('Y-m-d');
+            $tglakhir = Carbon::createFromFormat('m-d-Y', $request->tglakhir)->format('Y-m-d');
+            $query->whereBetween('created_at', [$tglawal, $tglakhir]);
+        }
+
+        $data = $query->get();
+        $pdfData = [];
+
+        foreach ($data as $item) {
+            $itemData = $item->toArray();
+
+            // Assuming there's a relationship named 'user' on the PpMandiri model
+            $siswaData = $item->user ? $item->user->toArray() : [];
+
+            // Assuming there's a relationship named 'databuku' on the PpMandiri model
+            $databukuData = $item->databuku ? $item->databuku->toArray() : [];
+
+            // Merge PpMandiri data with related Siswa and DataBuku data
+            $pdfData['data'][] = array_merge($itemData, $siswaData, $databukuData);
+        }
+
+        $pdfData['tglawal'] = $request->tglawal;
+        $pdfData['tglakhir'] = $request->tglakhir;
+        // dd($pdfData);
+
+        $pdf = PDF::loadView('page.admin.pdf', compact('pdfData'));
+
+        if ($pdfData['tglawal'] && $pdfData['tglakhir']) {
+            return $pdf->download('lap-mandiri-' . $request->tglawal . ' sampai ' . $request->tglakhir . '.pdf');
+        } else {
+            return $pdf->download('lap-semua-tanggal.pdf');
+        }
+    }
+
+    public function pdfMandiri(Request $request)
+    {
+        $query = PpMandiri::query();
+
+        if ($request->tglawal && $request->tglakhir) {
+            $tglawal = Carbon::createFromFormat('m-d-Y', $request->tglawal)->format('Y-m-d');
+            $tglakhir = Carbon::createFromFormat('m-d-Y', $request->tglakhir)->format('Y-m-d');
+            $query->whereBetween('created_at', [$tglawal, $tglakhir]);
+        }
+
+        $data = $query->get();
+        $pdfData = [];
+
+        foreach ($data as $item) {
+            $itemData = $item->toArray();
+
+            // Assuming there's a relationship named 'user' on the PpMandiri model
+            $siswaData = $item->user ? $item->user->toArray() : [];
+
+            // Assuming there's a relationship named 'databuku' on the PpMandiri model
+            $databukuData = $item->databuku ? $item->databuku->toArray() : [];
+
+            // Merge PpMandiri data with related Siswa and DataBuku data
+            $pdfData['data'][] = array_merge($itemData, $siswaData, $databukuData);
+        }
+
+        $pdfData['tglawal'] = $request->tglawal;
+        $pdfData['tglakhir'] = $request->tglakhir;
+        // dd($pdfData);
+
+        $pdf = PDF::loadView('page.admin.pdf', compact('pdfData'));
+
+        if ($pdfData['tglawal'] && $pdfData['tglakhir']) {
+            return $pdf->download('lap-mandiri-' . $request->tglawal . ' sampai ' . $request->tglakhir . '.pdf');
+        } else {
+            return $pdf->download('lap-semua-tanggal.pdf');
+        }
     }
 }

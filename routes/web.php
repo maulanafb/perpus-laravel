@@ -33,7 +33,8 @@ Route::get('/sop-anggota', [HomeController::class, 'SOPAnggota'])->name('SOPAngg
 Route::get('/sop-peminjam', [HomeController::class, 'SOPPeminjaman'])->name('SOPPeminjaman-Pengunjung');
 Route::get('/sop-pengembalian', [HomeController::class, 'SOPPengembalian'])->name('SOPPengembalian-Pengunjung');
 
-
+Route::get('/admin/lap-mandiri/pdf/', [AdminController::class, 'pdfMandiri'])->name('lap-bm.pdfMandiri');
+Route::get('/admin/lap-mandiri/pdf/', [AdminController::class, 'pdfKolektif'])->name('lap-bm.pdfKolektif');
 
 
 Route::group(['middleware' => ['role:admin']], function () {
@@ -107,6 +108,7 @@ Route::get('/laporan', [AdminController::class, 'Laporan']);
 Route::group(['middleware' => ['role:user']], function () {
     Route::get('/beranda-siswa', [SiswaController::class, 'Beranda'])->name('beranda.siswa');
     Route::get('/data-buku', [SiswaController::class, 'DataBuku'])->name('data-buku');
+    Route::get('/siswa/history', [SiswaController::class, 'history'])->name('history');
     Route::post('/pp-kolektif-siswa', [SiswaController::class, 'TambahPeminjamanKolektif'])->name('pp-kolektif-siswa');
     Route::post('/pp-mandiri-siswa', [SiswaController::class, 'TambahPeminjamanMandiri'])->name('pp-mandiri-siswa');
 

@@ -19,7 +19,7 @@ return new class extends Migration {
 
             $table->string('jumlah');
             $table->date('tgl_pinjam');
-            $table->boolean('status')->default(false);
+            $table->enum('status', ["booking", "pinjam", "kembali"])->default("booking");
 
             $table->foreign('id_buku')->references('id')->on('databukus')->onDelete('cascade')->onUpdate('cascade');
 

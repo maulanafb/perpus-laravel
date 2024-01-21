@@ -96,7 +96,7 @@
                                         <button id="excelExport" class="btn btn-success ml-2"><i
                                                 class="fa fa-file-excel-o"></i>
                                             Excell</button>
-                                        <button id="pdfExport" class="btn btn-danger ml-3"><i
+                                        <button id="export-pdf-button" class="btn btn-danger ml-3"><i
                                                 class="fa fa-file-pdf-o"></i>
                                             PDF</button>
                                         <h4 class="card-title"></h4>
@@ -273,6 +273,56 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
         <script>
+            function formatDate(inputDate) {
+    var parts = inputDate.split('/');
+    return parts[0] + '-' + parts[1] + '-' + parts[2];
+}
+           function pdf() {
+    var dateRange = $('input[name="daterange"]').val();
+
+    // Check if the date range is not empty
+    if (dateRange) {
+        var dateArray = dateRange.split(' - ');
+        var tglawal = formatDate(dateArray[0]);
+    var tglakhir = formatDate(dateArray[1]);
+
+        window.open(
+            "{{ route('lap-bm.pdfMandiri') }}?tglawal=" + tglawal + "&tglakhir=" + tglakhir,
+            '_blank'
+        );
+    } else {
+        swal({
+            title: "Yakin export PDF Semua Data?",
+            type: "warning",
+            buttons: true,
+            dangerMode: true,
+            confirmButtonText: "Yakin",
+            cancelButtonText: 'Batal',
+            showCancelButton: true,
+            showConfirmButton: true,
+            closeOnConfirm: false,
+            confirmButtonColor: '#09ad95',
+        }, function(value) {
+            if (value == true) {
+                window.open(
+                    "{{ route('lap-bm.pdfMandiri') }}",
+                    '_blank'
+                );
+                swal.close();
+            }
+        });
+    }
+}
+        function validasi(judul, status) {
+            swal({
+                title: judul,
+                type: status,
+                confirmButtonText: "Iya."
+            });
+        }
+          document.getElementById('export-pdf-button').addEventListener('click', function() {
+            pdf(); // Panggil fungsi pdf() saat tombol ditekan
+        });
             $(document).ready(function() {
                 $('#addNamess').select2({
                     placeholder: 'Pilih Siswa',
@@ -315,9 +365,9 @@
             $("#excelExport").on("click", function() {
                 $(".buttons-excel").trigger("click");
             });
-            $("#pdfExport").on("click", function() {
-                $(".buttons-pdf").trigger("click");
-            });
+            // $("#pdfExport").on("click", function() {
+            //     $(".buttons-pdf").trigger("click");
+            // });
             $(function() {
 
                 $('input[name="daterange"]').daterangepicker({

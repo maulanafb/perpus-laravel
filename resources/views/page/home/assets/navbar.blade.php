@@ -32,6 +32,11 @@
                 <ul class="sub-menu">
 
                     <li>
+                        <a href="{{ route('history') }}"
+                           >History </a>
+
+                    </li>
+                    <li>
                         <a href="#"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Keluar</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

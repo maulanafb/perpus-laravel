@@ -55,6 +55,11 @@ class SiswaController extends Controller
         return view('page.home.detail-buku-kolektif', compact('book'));
     }
 
+    public function history()
+    {
+        return view('page.siswa.history-peminjaman');
+    }
+
     //data buku//
     public function DataBukuKolektif()
     {
@@ -119,7 +124,7 @@ class SiswaController extends Controller
                 'id_buku' => $id_buku,
                 'tgl_pinjam' => $tgl_pinjam,
                 'jumlah' => $jumlah,
-                'status' => false,
+                'status' => "booking",
                 // ... (atribut lainnya)
             ]);
 
