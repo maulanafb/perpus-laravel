@@ -374,11 +374,10 @@
                     startDate: moment().subtract(1, 'M'),
                     endDate: moment()
                 });
-
                 var table = $('#add-row').DataTable({
                     processing: true,
                     serverSide: true,
-                    "pageLength": 5,
+                    "pageLength": 100,
                     dom: 'lBfrtip',
                     buttons: [{
                             extend: 'copy',

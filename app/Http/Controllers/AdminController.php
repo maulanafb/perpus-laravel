@@ -528,13 +528,13 @@ class AdminController extends Controller
                                                                             data-original-title="Kembalikan"
                                                                             ' . ($row->status === "kembali" ? "disabled" : "") . '
 ' . ($row->status === "kembali" ? "disabled" : "") . ' ' . ($row->status === "booking" ? "disabled" : "") . '>
-                                                                            kembalikankan
+                                                                            kembalikan
                                                                         </button>
                                                                     </a>
                                                                     <a href="/peminjamandanpengembalian-mandiri/perpanjang/' . $row->id . '">
 														<button type="button" data-toggle="tooltip" title="" onclick="showSweetAlertPerpanjang()" class="btn btn-success btn-round ml-auto" data-original-title="Perpanjang" ' . ($row->status === "kembali" ? "disabled" : "") . '
 ' . ($row->status === "kembali" ? "disabled" : "") . ' ' . ($row->status === "booking" ? "disabled" : "") . ' >
-															Perpanjangkan
+															Perpanjang
 														</button>
 													</a>
                                                                     <a
@@ -666,9 +666,9 @@ class AdminController extends Controller
         $pinjam_mandiri = PpMandiri::findOrFail($id);
 
         // Jika peminjaman sudah dikembalikan, tidak bisa dilakukan perpanjangan
-        if ($pinjam_mandiri->status) {
-            return redirect('/peminjamandanpengembalian-mandiri-admin')->with('error', 'Peminjaman sudah dikembalikan, tidak bisa melakukan perpanjangan.');
-        }
+        // if ($pinjam_mandiri->status) {
+        //     return redirect('/peminjamandanpengembalian-mandiri-admin')->with('error', 'Peminjaman sudah dikembalikan, tidak bisa melakukan perpanjangan.');
+        // }
 
         // Hitung tanggal perpanjangan peminjaman (tambahkan 3 hari dari tanggal pengembalian sebelumnya)
         $tgl_perpanjang = Carbon::parse($pinjam_mandiri->tgl_kembali)->addDays(3);
@@ -863,7 +863,7 @@ class AdminController extends Controller
                 'id_buku' => $id_buku,
                 'tgl_pinjam' => $request->input('tgl_pinjam'),
                 'jumlah' => $jumlah,
-                'status' => false,
+                // 'status' => false,
                 // ... (atribut lainnya)
                 'confirm' => true, // Tambahkan 'confirm' => true
             ]);
@@ -891,11 +891,10 @@ class AdminController extends Controller
         // dd($pinjam_kolektif);
 
         // Jika status peminjaman adalah "Dikembalikan", tidak perlu melakukan apa-apa
-
-
         // Ubah status menjadi "dikembalikan"
         // dd($pinjam_kolektif->status);
         $pinjam_kolektif->status = "kembali";
+        $pinjam_kolektif->tgl_kembali = Carbon::now()->toDateString();
         $pinjam_kolektif->save();
 
         // Ambil informasi buku yang dipinjam
@@ -957,12 +956,12 @@ class AdminController extends Controller
         $pdfData['tglakhir'] = $request->tglakhir;
         // dd($pdfData);
 
-        $pdf = PDF::loadView('page.admin.pdf', compact('pdfData'));
+        $pdf = PDF::loadView('page.admin.pdfKolektif', compact('pdfData'));
 
         if ($pdfData['tglawal'] && $pdfData['tglakhir']) {
-            return $pdf->download('lap-mandiri-' . $request->tglawal . ' sampai ' . $request->tglakhir . '.pdf');
+            return $pdf->download('lap-kolektif-' . $request->tglawal . ' sampai ' . $request->tglakhir . '.pdf');
         } else {
-            return $pdf->download('lap-semua-tanggal.pdf');
+            return $pdf->download('lap-kolektif-semua-tanggal.pdf');
         }
     }
 
@@ -972,10 +971,9 @@ class AdminController extends Controller
 
         if ($request->tglawal && $request->tglakhir) {
             $tglawal = Carbon::createFromFormat('m-d-Y', $request->tglawal)->format('Y-m-d');
-            $tglakhir = Carbon::createFromFormat('m-d-Y', $request->tglakhir)->format('Y-m-d');
+            $tglakhir = Carbon::createFromFormat('m-d-Y', $request->tglakhir)->addDays(1)->format('Y-m-d');
             $query->whereBetween('created_at', [$tglawal, $tglakhir]);
         }
-
         $data = $query->get();
         $pdfData = [];
 
@@ -996,12 +994,12 @@ class AdminController extends Controller
         $pdfData['tglakhir'] = $request->tglakhir;
         // dd($pdfData);
 
-        $pdf = PDF::loadView('page.admin.pdf', compact('pdfData'));
+        $pdf = PDF::loadView('page.admin.pdfMandiri', compact('pdfData'));
 
         if ($pdfData['tglawal'] && $pdfData['tglakhir']) {
             return $pdf->download('lap-mandiri-' . $request->tglawal . ' sampai ' . $request->tglakhir . '.pdf');
         } else {
-            return $pdf->download('lap-semua-tanggal.pdf');
+            return $pdf->download('lap-kolektif-semua-tanggal.pdf');
         }
     }
 }

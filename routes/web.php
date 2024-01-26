@@ -34,7 +34,7 @@ Route::get('/sop-peminjam', [HomeController::class, 'SOPPeminjaman'])->name('SOP
 Route::get('/sop-pengembalian', [HomeController::class, 'SOPPengembalian'])->name('SOPPengembalian-Pengunjung');
 
 Route::get('/admin/lap-mandiri/pdf/', [AdminController::class, 'pdfMandiri'])->name('lap-bm.pdfMandiri');
-Route::get('/admin/lap-mandiri/pdf/', [AdminController::class, 'pdfKolektif'])->name('lap-bm.pdfKolektif');
+Route::get('/admin/lap-kolektif/pdf/', [AdminController::class, 'pdfKolektif'])->name('lap-bm.pdfKolektif');
 
 
 Route::group(['middleware' => ['role:admin']], function () {

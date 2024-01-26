@@ -234,6 +234,7 @@
                                                         <th>Judul Buku</th>
                                                         <th>Jumlah</th>
                                                         <th>Tanggal Peminjaman</th>
+                                                        <th>Tanggal Pengembalian</th>
                                                         <th>Status</th>
                                                         <th style="width: 10%">Aksi</th>
                                                     </tr>
@@ -405,7 +406,6 @@
                 // Add an event listener to the logout link
                 document.getElementById('logout-link').addEventListener('click', function(event) {
                     event.preventDefault(); // Prevent the default link behavior
-
                     // Display the SweetAlert confirmation dialog
                     Swal.fire({
                         title: 'Yakin?',
@@ -443,7 +443,7 @@
                     var table = $('#add-row').DataTable({
                         processing: true,
                         serverSide: true,
-                        "pageLength": 5,
+                        "pageLength": 100,
                         dom: 'lBfrtip',
                         buttons: [{
                                 extend: 'copy',
@@ -514,6 +514,10 @@
                             {
                                 data: 'tgl_pinjam',
                                 name: 'tgl_pinjam'
+                            },
+                            {
+                                data: 'tgl_kembali',
+                                name: 'tgl_kembali'
                             },
                             {
                                 data: 'status',
