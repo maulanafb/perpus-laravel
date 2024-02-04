@@ -217,7 +217,21 @@
         }
     });
 });
+
     </script>
+    <script>
+    console.log('SweetAlert2 script is running');
+
+    @if(Session::has('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: '{{ Session::get('success') }}',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    @endif
+</script>
 
 
 

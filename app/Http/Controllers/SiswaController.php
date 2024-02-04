@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 
 class SiswaController extends Controller
 {
@@ -78,6 +79,42 @@ class SiswaController extends Controller
 
         return redirect()->back()->with('success', 'Buku berhasil ditambahkan ke keranjang.');
     }
+
+
+
+    public function checkout()
+    {
+        // Ambil data dari Cart berdasarkan id_user
+        $cartItems = Cart::where("id_user", Auth::user()->id)->get();
+
+        // Jika ada item dalam Cart
+        if ($cartItems->isNotEmpty()) {
+            // Loop melalui data Cart
+            foreach ($cartItems as $cartItem) {
+                // Buat catatan PpMandiri untuk setiap item di dalam Cart
+                PpMandiri::create([
+                    'id_buku' => $cartItem->id_buku,
+                    'id_user' => $cartItem->id_user,
+                    'jumlah' => 1,
+                    'tgl_pinjam' => now()
+                    // Sesuaikan atribut lainnya sesuai kebutuhan
+                ]);
+
+                // Hapus item dari Cart setelah dicatat di PpMandiri
+                $cartItem->delete();
+            }
+
+            // Sinyalkan bahwa peminjaman berhasil untuk mencetak struk di tampilan
+            $printStruk = true;
+
+            // Redirect atau berikan pesan sukses sesuai kebutuhan
+            return view('page.siswa.struk', compact('cartItems', 'printStruk'));
+        } else {
+            // Redirect atau berikan pesan bahwa Cart kosong
+            return redirect()->back()->with('error', 'Tidak ada item untuk dipinjam.');
+        }
+    }
+
 
     public function deleteCart($id)
     {

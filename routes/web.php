@@ -111,6 +111,7 @@ Route::group(['middleware' => ['role:user']], function () {
     Route::get('/siswa/history/mandiri', [SiswaController::class, 'historyMandiri'])->name('history-mandiri');
     Route::get('/siswa/cart', [SiswaController::class, 'cart'])->name('cart');
     Route::post('/siswa/cart', [SiswaController::class, 'addCart'])->name('addcart');
+    Route::post('/siswa/cart/checkout', [SiswaController::class, 'checkout'])->name('checkout');
     Route::delete('/delete-cart/{id}', [SiswaController::class, 'deleteCart'])->name('deletecart');
 
 

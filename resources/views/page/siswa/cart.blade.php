@@ -4,6 +4,45 @@
 <head>
     <title>SEKOLAH MENENGAH KEJURUAN - AL MADANI PONTIANAK</title>
     @include('page.home.assets.head')
+    <style>
+          .struk-container {
+            max-width: 600px;
+            margin: auto;
+            border: 1px solid #ddd;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .judul {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .info-buku {
+            margin-top: 20px;
+        }
+
+        .info-buku p {
+            margin: 5px 0;
+        }
+
+        .ringkasan {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .ringkasan li {
+            list-style: none;
+            margin: 5px 0;
+        }
+
+        .total {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -93,15 +132,25 @@
                                     </li>
                                 </ul>
 
-                                <button type="button" class="btn btn-primary btn-lg btn-block">
-                                    Pinjam Sekarang
-                                </button>
+                                <form method="post" action="{{ route('checkout', ['userId' => Auth::id()]) }}">
+    @csrf
+    <button type="submit" class="btn btn-primary btn-lg btn-block">
+        Pinjam Sekarang
+    </button>
+</form>
                             </div>
                         </div>
                     </div>
             </div>
         </div>
     </section>
+
+    {{-- struk --}}
+
+
+
+    {{-- end struk --}}
+
 
     <footer>
         @include('page.home.assets.footer')
@@ -110,6 +159,27 @@
     <!-- Scripts -->
     <!-- Bootstrap core JavaScript -->
     @include('page.home.assets.footer-js')
+<script>
+    @if(Session::has('success'))
+        printStruk()
+    @endif
+
+    function printStruk() {
+        // Sembunyikan elemen-elemen yang tidak ingin dicetak
+        var elementsToHide = document.querySelectorAll('body > *:not(.struk-container)');
+        elementsToHide.forEach(function (element) {
+            element.style.display = 'none';
+        });
+
+        // Cetak halaman
+        window.print();
+
+        // Kembalikan tampilan elemen-elemen yang disembunyikan
+        elementsToHide.forEach(function (element) {
+            element.style.display = '';
+        });
+    }
+</script>
 </body>
 
 </html>

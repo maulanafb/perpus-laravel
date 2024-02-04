@@ -94,8 +94,7 @@
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 
     <footer class="mt-4">
@@ -103,6 +102,16 @@
     </footer>
 
     @include('page.home.assets.footer-js')
+     <script>   @if(Session::has('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: '{{ Session::get('success') }}',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    @endif
+    </script>
 
 
 </body>
