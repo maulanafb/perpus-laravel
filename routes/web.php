@@ -108,7 +108,13 @@ Route::get('/laporan', [AdminController::class, 'Laporan']);
 Route::group(['middleware' => ['role:user']], function () {
     Route::get('/beranda-siswa', [SiswaController::class, 'Beranda'])->name('beranda.siswa');
     Route::get('/data-buku', [SiswaController::class, 'DataBuku'])->name('data-buku');
-    Route::get('/siswa/history', [SiswaController::class, 'history'])->name('history');
+    Route::get('/siswa/history/mandiri', [SiswaController::class, 'historyMandiri'])->name('history-mandiri');
+    Route::get('/siswa/cart', [SiswaController::class, 'cart'])->name('cart');
+    Route::post('/siswa/cart', [SiswaController::class, 'addCart'])->name('addcart');
+    Route::delete('/delete-cart/{id}', [SiswaController::class, 'deleteCart'])->name('deletecart');
+
+
+    Route::get('/siswa/history/kolektif', [SiswaController::class, 'historyKolektif'])->name('history-kolektif');
     Route::post('/pp-kolektif-siswa', [SiswaController::class, 'TambahPeminjamanKolektif'])->name('pp-kolektif-siswa');
     Route::post('/pp-mandiri-siswa', [SiswaController::class, 'TambahPeminjamanMandiri'])->name('pp-mandiri-siswa');
 

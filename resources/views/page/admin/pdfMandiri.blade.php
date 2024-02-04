@@ -116,18 +116,19 @@ use Carbon\Carbon;
     </tr>
 </thead>
         <tbody>
-            @php $no = 1; @endphp
-            @foreach ($pdfData['data'] as $d)
-                <tr>
-                    <td align="center">{{ $no++ }}</td>
-                    <td align="center">{{ $d['name'] }}</td>
-                    <td align="center">{{ $d['judul'] }}</td>
-                    <td align="center">{{ Carbon::parse($d['tgl_pinjam'])->translatedFormat('d F Y') }}</td>
-                    <td align="center">{{ Carbon::parse($d['tgl_kembali'])->translatedFormat('d F Y') }}</td>
-                    <td align="center">{{ $d['status'] }}</td>
-                    <td align="center">{{ $d['denda'] }}</td>
-                </tr>
-            @endforeach
+  @php $no = 1; @endphp
+@foreach ($pdfData['data'] as $d)
+    <tr>
+        <td align="center">{{ $no++ }}</td>
+        <td align="center">{{ $d['name'] ?? '-' }}</td>
+        <td align="center">{{ $d['judul'] ?? '-' }}</td>
+        <td align="center">{{ $d['tgl_pinjam'] ? Carbon::parse($d['tgl_pinjam'])->translatedFormat('d F Y') : '-' }}</td>
+        <td align="center">{{ $d['tgl_kembali'] ? Carbon::parse($d['tgl_kembali'])->translatedFormat('d F Y') : '-' }}</td>
+        <td align="center">{{ $d['status'] ?? '-' }}</td>
+        <td align="center">{{ $d['denda'] ?? '-' }}</td>
+    </tr>
+@endforeach
+
         </tbody>
     </table>
 

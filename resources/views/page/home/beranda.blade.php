@@ -66,10 +66,10 @@
         {{-- <footer class="mt-4">
             @include('page.home.assets.footer')
         </footer>
-    
+
         @include('page.home.assets.footer-js') --}}
 
-      
+
         <!-- Scripts -->
         <!-- Bootstrap core JavaScript -->
         @include('page.home.assets.footer-js')

@@ -44,8 +44,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="header-text">
-                        <h2>Peminjaman Kolektif</h2>
+                        <h2>Peminjaman Mandiri</h2>
                         <div class="div-dec"></div>
+
                     </div>
                 </div>
             </div>
@@ -58,6 +59,35 @@
                 <i class="fas fa-arrow-left"></i> Kembali ke Halaman sebelumnya
             </button>
 
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">No</th>
+      <th scope="col">Judul</th>
+      <th scope="col">Status</th>
+
+    </tr>
+  </thead>
+<tbody>
+@php $nomor_urut = 1 @endphp
+@foreach ($history as $item)
+    <tr>
+        <td>{{ $nomor_urut++ }}</td>
+        <td>{{ $item->databuku->judul }}</td>
+
+        <td>
+            @if ($item->status == 'kembali')
+                <button class="btn btn-success">Dikembalikan</button>
+            @elseif ($item->status == 'booking')
+                <button class="btn btn-secondary">Booking</button>
+            @else
+                <button class="btn btn-warning">Sedang Dipinjam</button>
+            @endif
+        </td>
+    </tr>
+@endforeach
+</tbody>
+</table>
 
         </div>
     </section>

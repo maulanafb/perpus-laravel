@@ -47,6 +47,11 @@ class User extends Authenticatable
     ];
     public function pengunjung()
     {
-        return $this->hasMany(Pengunjung::class, 'id_user', 'id');
+        return $this->hasMany(DataPengunjung::class, 'id_user', 'id');
+    }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, 'id_user');
     }
 }
