@@ -74,14 +74,7 @@
     </footer>
 
     @include('page.home.assets.footer-js')
-<script>
-    Swal.fire({
-    title: 'Error!',
-    text: 'Do you want to continue',
-    icon: 'error',
-    confirmButtonText: 'Cool'
-    })
-</script>
+
 </body>
 
 </html>

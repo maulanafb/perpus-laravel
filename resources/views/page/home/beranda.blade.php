@@ -73,6 +73,21 @@
         <!-- Scripts -->
         <!-- Bootstrap core JavaScript -->
         @include('page.home.assets.footer-js')
+     @foreach ($ppMandiris as $ppMandiri)
+        @if(now()->diffInDays($ppMandiri->updated_at) > 3)
+            <script>
+                // SweetAlert notification for overdue book
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Perhatian!',
+                    text: 'Ada buku yang terlambat. Harap segera mengembalikan buku.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
+                });
+            </script>
+        @endif
+    @endforeach
+    </script>
         <script>
             var interleaveOffset = 0.5;
 
@@ -119,7 +134,7 @@
         </script>
 
         <!-- SweetAlert library -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+        {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script> --}}
         <script>
             // Add an event listener to the logout link
             document.getElementById('logout-link').addEventListener('click', function(event) {
@@ -144,6 +159,7 @@
                 });
             });
         </script>
+
 </body>
 
 </html>

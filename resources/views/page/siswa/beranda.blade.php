@@ -33,6 +33,9 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="../assets/css/demo.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.10.4/dist/sweetalert2.min.css
+" rel="stylesheet">
     {{-- Font awesome --}}
     <script src="https://kit.fontawesome.com/1266dcde92.js" crossorigin="anonymous"></script>
 </head>
@@ -262,10 +265,34 @@
     <script src="../assets/js/plugin/jqvmap/maps/jquery.vmap.world.js"></script>
 
     <!-- Sweet Alert -->
-    <script src="../assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+    {{-- <script src="../assets/js/plugin/sweetalert/sweetalert.min.js"></script> --}}
 
     <!-- Atlantis JS -->
+    @include('page.home.assets.footer-js')
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
+    <script>
+         Swal.fire({
+  title: 'Error!',
+  text: 'Do you want to continue',
+  icon: 'error',
+  confirmButtonText: 'Cool'
+})
+    </script>
     <script src="../assets/js/atlantis.min.js"></script>
+     @foreach ($ppMandiris as $ppMandiri)
+        @if(now()->diffInDays($ppMandiri->tgl_pinjam) > 3)
+            <script>
+                // SweetAlert notification for overdue book
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Perhatian!',
+                    text: 'Ada buku yang terlambat. Harap segera mengembalikan buku.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
+                });
+            </script>
+        @endif
+    @endforeach
 
     <!-- Atlantis DEMO methods, don't include it in your project! -->
     {{-- <script src="../assets/js/setting-demo.js"></script>

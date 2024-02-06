@@ -647,7 +647,7 @@ class AdminController extends Controller
         $buku->save();
 
         // Hitung denda
-        $tgl_pengembalian = Carbon::parse($pinjam_mandiri->tgl_kembali);
+        $tgl_pengembalian = Carbon::parse($pinjam_mandiri->updated_at);
         $tgl_perpanjang = Carbon::parse($pinjam_mandiri->tgl_perpanjang ?? $pinjam_mandiri->tgl_pinjam);
         $selisihHari = $tgl_pengembalian->diffInDays($tgl_perpanjang);
 

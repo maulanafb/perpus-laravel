@@ -27,7 +27,8 @@ class SiswaController extends Controller
         $total_buku = DataBuku::get()->count();
         $total_anggota = DataAnggota::get()->count();
         $total_pengunjung = DataPengunjung::get()->count();
-        return view('page.siswa.beranda', compact('total_buku', 'total_anggota', 'total_pengunjung'));
+        $ppMandiris = PpMandiri::where('id_user', Auth::user()->id)->get();
+        return view('page.siswa.beranda', compact('total_buku', 'total_anggota', 'total_pengunjung', 'ppMandiris'));
     }
     public function listBukuMandiri()
     {

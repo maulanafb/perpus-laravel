@@ -88,7 +88,7 @@
         <div class="total">Terima kasih telah meminjam buku. Selamat membaca!</div>
     </div>
     {{-- end struk --}}
-    <script>
+      <script>
         document.addEventListener('DOMContentLoaded', function () {
             @if(isset($printStruk) && $printStruk)
                 printStruk();
@@ -105,10 +105,15 @@
             // Cetak halaman
             window.print();
 
-            // Kembalikan tampilan elemen-elemen yang disembunyikan
+            // Tampilkan elemen-elemen yang disembunyikan setelah mencetak
             elementsToHide.forEach(function (element) {
                 element.style.display = '';
             });
+
+            // Tunggu 5 detik dan arahkan ke route 'historyMandiri'
+            setTimeout(function () {
+                window.location.href = "{{ route('history-mandiri') }}";
+            }, 2000);
         }
     </script>
     <!-- Bagian lainnya ... -->

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Databuku;
+use App\Models\PpMandiri;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,14 +28,23 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $userId = optional(Auth::user())->id;
 
+        if ($userId) {
+            // Pengguna sedang login, dapatkan data $ppMandiris
+            $ppMandiris = PpMandiri::where('id_user', $userId)->get();
+
+            // Lakukan sesuatu dengan $ppMandiris
+        } else {
+            $ppMandiris = [];
+        }
         // if (Auth::user()->hasRole('admin')) {
         //     return redirect()->route('beranda.admin');
         // } elseif (Auth::user()->hasRole('kepsek')) {
         //     return redirect()->route('beranda.kepsek');
         // }
         // return redirect()->route('beranda.siswa');
-        return view('page.home.beranda');
+        return view('page.home.beranda', compact('ppMandiris'));
     }
 
     public function Profile()
