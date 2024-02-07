@@ -57,6 +57,7 @@
         <li class="has-sub">
                 <a href="javascript:void(0)" class="sub-menu">Hai, {{ Auth::user()->name }}</a>
                 <ul class="sub-menu">
+                    @role('user')
                     <li>
                         <a href="{{ route('history-mandiri') }}"
                            >History Mandiri</a>
@@ -65,6 +66,7 @@
                         <a href="{{ route('history-kolektif') }}"
                            >History Kolektif</a>
                     </li>
+                    @endrole
                     <li>
                         <a href="#"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Keluar</a>
