@@ -4,6 +4,7 @@
 <head>
     <title>SEKOLAH MENENGAH KEJURUAN - AL MADANI PONTIANAK</title>
     @include('page.home.assets.head')
+     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
     <style>
         /* Gaya untuk memusatkan teks pada header tabel */
         .table thead th {
@@ -46,7 +47,6 @@
                     <div class="header-text">
                         <h2>Peminjaman Kolektif</h2>
                         <div class="div-dec"></div>
-
                     </div>
                 </div>
             </div>
@@ -59,11 +59,13 @@
                 <i class="fas fa-arrow-left"></i> Kembali ke Halaman sebelumnya
             </button>
 
-<table class="table">
+<table class="table" id="table-kolektif">
   <thead>
     <tr>
       <th scope="col">No</th>
       <th scope="col">Judul</th>
+       <th scope="col">Tanggal Dipinjam</th>
+      <th scope="col">Tanggal Kembali</th>
       <th scope="col">Status</th>
 
     </tr>
@@ -74,6 +76,8 @@
     <tr>
         <td>{{ $nomor_urut++ }}</td>
         <td>{{ $item->databuku->judul }}</td>
+        <td>{{ $item->tgl_pinjam }}</td>
+        <td>{{ $item->tgl_kembali }}</td>
 
         <td>
             @if ($item->status == 'kembali')
@@ -95,17 +99,19 @@
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-
     <footer class="mt-4">
         @include('page.home.assets.footer')
     </footer>
 
     @include('page.home.assets.footer-js')
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 
-
+<script>
+    $(document).ready( function () {
+        $('#table-kolektif').DataTable();
+    });
+</script>
 </body>
 
 </html>

@@ -584,10 +584,11 @@ class AdminController extends Controller
         if ($buku->stok < 0) {
             $buku->stok = 0; // Pastikan stok tidak negatif
         }
-
         $buku->save();
         // Mengatur kolom "confirm" menjadi true
         $ppmandiri->confirm = true;
+        date_default_timezone_set('Asia/Jakarta'); // Set the timezone to WIB
+        $ppmandiri->tgl_pinjam = date('Y-m-d H:i:s');
         $ppmandiri->status = "pinjam";
         $ppmandiri->save();
 

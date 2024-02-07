@@ -74,23 +74,28 @@
         <!-- Bootstrap core JavaScript -->
         @include('page.home.assets.footer-js')
      @foreach ($ppMandiris as $ppMandiri)
-        @if(now()->diffInDays($ppMandiri->updated_at) > 3)
+        @if(now()->diffInDays($ppMandiri->tgl_pinjam) > 3 && $ppMandiri->status == "pinjam")
             <script>
-                // SweetAlert notification for overdue book
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Perhatian!',
-                    text: 'Ada buku yang terlambat. Harap segera mengembalikan buku.',
-                    confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'OK'
-                });
-            </script>
+    // SweetAlert notification for overdue book with a button
+    Swal.fire({
+        icon: 'warning',
+        title: 'Perhatian!',
+        text: 'Ada buku yang terlambat. Harap segera mengembalikan buku. Klik OK untuk menuju ke halaman History Peminjaman Mandiri untuk mengetahui Buku apa yang terlambat dikembalikan',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Tutup'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Redirect to the History Peminjaman Mandiri page
+            window.location.href = "{{ route('history-mandiri') }}";
+        }
+    });
+</script>
         @endif
     @endforeach
-    </script>
         <script>
             var interleaveOffset = 0.5;
-
             var swiperOptions = {
                 loop: true,
                 speed: 1000,

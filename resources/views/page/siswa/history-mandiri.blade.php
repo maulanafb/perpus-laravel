@@ -4,6 +4,8 @@
 <head>
     <title>SEKOLAH MENENGAH KEJURUAN - AL MADANI PONTIANAK</title>
     @include('page.home.assets.head')
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
     <style>
         /* Gaya untuk memusatkan teks pada header tabel */
         .table thead th {
@@ -59,11 +61,13 @@
                 <i class="fas fa-arrow-left"></i> Kembali ke Halaman sebelumnya
             </button>
 
-<table class="table">
+<table class="table" id="table-mandiri">
   <thead>
     <tr>
       <th scope="col">No</th>
       <th scope="col">Judul</th>
+      <th scope="col">Tanggal Dipinjam</th>
+      <th scope="col">Tanggal Kembali</th>
       <th scope="col">Status</th>
 
     </tr>
@@ -71,10 +75,11 @@
 <tbody>
 @php $nomor_urut = 1 @endphp
 @foreach ($history as $item)
-    <tr>
+     <tr @if(now()->diffInDays($item->tgl_pinjam) > 3 && $item->status == "pinjam") style="background-color: #f79696;vertical-align:middle;" @endif style="vertical-align:middle;">
         <td>{{ $nomor_urut++ }}</td>
         <td>{{ $item->databuku->judul }}</td>
-
+        <td>{{ $item->tgl_pinjam }}</td>
+        <td>{{ $item->tgl_kembali ?? "Belum Dikembalikan" }}</td>
         <td>
             @if ($item->status == 'kembali')
                 <button class="btn btn-success">Dikembalikan</button>
@@ -111,6 +116,10 @@
             timer: 1500
         });
     @endif
+
+     $(document).ready( function () {
+        $('#table-mandiri').DataTable();
+    });
     </script>
 
 
