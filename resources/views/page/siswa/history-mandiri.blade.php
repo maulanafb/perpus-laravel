@@ -61,7 +61,8 @@
                 <i class="fas fa-arrow-left"></i> Kembali ke Halaman sebelumnya
             </button>
 
-<table class="table" id="table-mandiri">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" id="table-mandiri">
   <thead>
     <tr>
       <th scope="col">No</th>
@@ -93,6 +94,7 @@
 @endforeach
 </tbody>
 </table>
+            </div>
 
         </div>
     </section>
