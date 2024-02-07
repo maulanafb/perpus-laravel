@@ -286,7 +286,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.4/dist/sweetalert2.min.css
                 Swal.fire({
                     icon: 'warning',
                     title: 'Perhatian!',
-                    text: 'Ada buku yang terlambat. Harap segera mengembalikan buku.',
+                    text: 'Ada buku yang terlambat anda kembalikan. Harap segera mengembalikan buku.',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'OK'
                 });

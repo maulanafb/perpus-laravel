@@ -25,6 +25,7 @@ class AdminController extends Controller
     //beranda/
     public function Beranda()
     {
+        $ppMandiris = PpMandiri::all();
         $total_buku = DataBuku::get()->count();
         $total_anggota = User::get()->count();
         $total_pengunjung = DataPengunjung::get()->count();
@@ -32,7 +33,7 @@ class AdminController extends Controller
         $total_pinjam_kolektif = PpKolektif::get()->count();
         $total_pengembalian_mandiri = PpMandiri::where('status', true)->get()->count();
         $total_pengembalian_kolektif = PpKolektif::where('status', true)->get()->count();
-        return view('page.admin.beranda', compact('total_buku', 'total_anggota', 'total_pengunjung', 'total_pinjam_mandiri', 'total_pinjam_kolektif', 'total_pengembalian_mandiri', 'total_pengembalian_kolektif'));
+        return view('page.admin.beranda', compact('ppMandiris','total_buku', 'total_anggota', 'total_pengunjung', 'total_pinjam_mandiri', 'total_pinjam_kolektif', 'total_pengembalian_mandiri', 'total_pengembalian_kolektif'));
     }
 
     //data buku/
@@ -477,6 +478,24 @@ class AdminController extends Controller
                 ->addColumn('name', function ($row) {
                     return $row->user->name;
                 })
+                ->addColumn('tgl_kembali', function ($row) {
+                    if ($row->status == "pinjam") {
+                        if (now()->diffInDays($row->tgl_pinjam) > 3) {
+                            return '<div class="btn btn-danger btn-sm">Terlambat</div>';
+                        } elseif ($row->tgl_kembali) {
+                            return $row->tgl_kembali;
+                        } else {
+                            return '<div class="btn btn-primary btn-sm">Belum di Kembalikan</div>';
+                        }
+                    } elseif ($row->status == "booking") {
+                        return '<div class="btn btn-warning btn-sm">Belum di konfirmasi</div>';
+                    } elseif ($row->status == "kembali") {
+                        return $row->tgl_kembali;
+                    } else {
+                        return '<div class="btn btn-warning btn-sm">Status Tidak Valid</div>';
+                    }
+                })
+
                 ->addColumn('judul', function ($row) {
                     return $row->databuku->judul;
                 })
@@ -552,7 +571,7 @@ class AdminController extends Controller
 
                     return $btn;
                 })
-                ->rawColumns(['action', 'status', 'nisn', 'name', 'judul', 'no_panggil'])
+                ->rawColumns(['action', 'status', 'nisn', 'name', 'judul', 'no_panggil', 'tgl_kembali'])
                 ->make(true);
         }
         $judul_buku = Databuku::get();

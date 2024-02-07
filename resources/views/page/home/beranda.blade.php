@@ -80,7 +80,7 @@
     Swal.fire({
         icon: 'warning',
         title: 'Perhatian!',
-        text: 'Ada buku yang terlambat. Harap segera mengembalikan buku. Klik OK untuk menuju ke halaman History Peminjaman Mandiri untuk mengetahui Buku apa yang terlambat dikembalikan',
+        text: 'Ada buku yang terlambat dikembalikan. Harap segera mengembalikan buku. Klik OK untuk menuju ke halaman History Peminjaman Mandiri untuk mengetahui Buku apa yang terlambat dikembalikan',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         confirmButtonText: 'OK',

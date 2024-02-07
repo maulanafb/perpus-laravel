@@ -358,7 +358,7 @@
     // Add an event listener to the logout link
     document.getElementById('logout-link').addEventListener('click', function (event) {
       event.preventDefault(); // Prevent the default link behavior
-  
+
       // Display the SweetAlert confirmation dialog
       Swal.fire({
         title: 'Yakin?',
@@ -378,6 +378,27 @@
       });
     });
   </script>
+   @foreach ($ppMandiris as $ppMandiri)
+        @if(now()->diffInDays($ppMandiri->tgl_pinjam) > 3 && $ppMandiri->status == "pinjam")
+            <script>
+    // SweetAlert notification for overdue book with a button
+    Swal.fire({
+        icon: 'warning',
+        title: 'Perhatian!',
+        text: 'Ada Murid yang terlambat mengembalikan buku,Untuk Melihatnya, Klik OK untuk menuju ke Halaman Peminjaman Buku',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Tutup'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Redirect to the History Peminjaman Mandiri page
+            window.location.href = "{{ route('pinjam-mandiri') }}";
+        }
+    });
+</script>
+        @endif
+    @endforeach
     <!-- Atlantis DEMO methods, don't include it in your project! -->
     {{-- <script src="../assets/js/setting-demo.js"></script>
 	<script src="../assets/js/demo.js"></script>
